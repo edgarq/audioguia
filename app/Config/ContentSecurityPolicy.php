@@ -43,6 +43,18 @@ class ContentSecurityPolicy extends BaseConfig
     public bool $upgradeInsecureRequests = false;
 
     // -------------------------------------------------------------------------
+    // Application-specific policy
+    // -------------------------------------------------------------------------
+    // Scripts: self + Bootstrap bundle from jsDelivr CDN
+    // Styles:  self + Bootstrap/Bootstrap-Icons CSS from jsDelivr CDN
+    //          style-src-attr allows 'unsafe-inline' because Bootstrap 5 JS
+    //          sets inline display styles on collapse/navbar elements
+    // Fonts:   jsDelivr CDN (Bootstrap Icons web font)
+    // Frames:  YouTube nocookie only
+    // Media:   self (audio files served from /uploads/)
+    // Objects/plugins: blocked entirely
+
+    // -------------------------------------------------------------------------
     // CSP DIRECTIVES SETTINGS
     // NOTE: once you set a policy to 'none', it cannot be further restricted
     // -------------------------------------------------------------------------
@@ -59,14 +71,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $scriptSrc = 'self';
+    public $scriptSrc = ['self', 'https://cdn.jsdelivr.net'];
 
     /**
      * Specifies valid sources for JavaScript <script> elements.
      *
      * @var list<string>|string
      */
-    public array|string $scriptSrcElem = 'self';
+    public array|string $scriptSrcElem = ['self', 'https://cdn.jsdelivr.net'];
 
     /**
      * Specifies valid sources for JavaScript inline event
@@ -74,21 +86,21 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $scriptSrcAttr = 'self';
+    public array|string $scriptSrcAttr = 'none';
 
     /**
      * Lists allowed stylesheets' URLs.
      *
      * @var list<string>|string
      */
-    public $styleSrc = 'self';
+    public $styleSrc = ['self', 'https://cdn.jsdelivr.net'];
 
     /**
      * Specifies valid sources for stylesheets <link> elements.
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcElem = 'self';
+    public array|string $styleSrcElem = ['self', 'https://cdn.jsdelivr.net'];
 
     /**
      * Specifies valid sources for stylesheets inline
@@ -96,14 +108,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcAttr = 'self';
+    public array|string $styleSrcAttr = 'unsafe-inline';
 
     /**
      * Defines the origins from which images can be loaded.
      *
      * @var list<string>|string
      */
-    public $imageSrc = 'self';
+    public $imageSrc = ['self', 'data:'];
 
     /**
      * Restricts the URLs that can appear in a page's `<base>` element.
@@ -134,7 +146,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $fontSrc;
+    public $fontSrc = ['self', 'https://cdn.jsdelivr.net'];
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.
@@ -151,7 +163,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string|null
      */
-    public $frameAncestors;
+    public $frameAncestors = 'none';
 
     /**
      * The frame-src directive restricts the URLs which may
@@ -159,21 +171,21 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string|null
      */
-    public $frameSrc;
+    public $frameSrc = 'https://www.youtube-nocookie.com';
 
     /**
      * Restricts the origins allowed to deliver video and audio.
      *
      * @var list<string>|string|null
      */
-    public $mediaSrc;
+    public $mediaSrc = 'self';
 
     /**
      * Allows control over Flash and other plugins.
      *
      * @var list<string>|string
      */
-    public $objectSrc = 'self';
+    public $objectSrc = 'none';
 
     /**
      * @var list<string>|string|null
