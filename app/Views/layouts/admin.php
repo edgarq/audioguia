@@ -88,5 +88,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="<?= base_url('assets/js/admin.js') ?>"></script>
+<script src="<?= base_url('assets/js/admin-quill.js') ?>"></script>
 </body>
 </html>

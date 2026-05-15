@@ -158,36 +158,4 @@ $method    = 'post';
     </div>
 </form>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const toolbarOptions = [
-        [{ header: [2, 3, false] }],
-        ['bold', 'italic', 'underline'],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        ['link', 'clean']
-    ];
-
-    const instances = {};
-    ['es', 'en', 'fr'].forEach(function (lang) {
-        const textarea  = document.getElementById('desc_' + lang);
-        const container = document.getElementById('editor_' + lang);
-        if (!textarea || !container) return;
-
-        const quill = new Quill(container, { theme: 'snow', modules: { toolbar: toolbarOptions } });
-
-        if (textarea.value.trim()) {
-            quill.clipboard.dangerouslyPasteHTML(textarea.value);
-        }
-
-        instances[lang] = { quill: quill, textarea: textarea };
-    });
-
-    document.querySelector('form').addEventListener('submit', function () {
-        Object.keys(instances).forEach(function (lang) {
-            const html = instances[lang].quill.root.innerHTML;
-            instances[lang].textarea.value = html === '<p><br></p>' ? '' : html;
-        });
-    });
-});
-</script>
 <?= $this->endSection() ?>
