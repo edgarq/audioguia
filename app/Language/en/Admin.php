@@ -60,4 +60,6 @@ return [
     'zone'               => 'Zone',
     'noZone'             => 'No zone',
     'coverImage'         => 'Cover Image',
+    'totalZones'         => 'Total Zones',
+    'publishedZones'     => 'Published Zones',
 ];

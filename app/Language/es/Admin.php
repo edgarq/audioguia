@@ -60,4 +60,6 @@ return [
     'zone'               => 'Zona',
     'noZone'             => 'Sin zona',
     'coverImage'         => 'Imagen de Portada',
+    'totalZones'         => 'Total Zonas',
+    'publishedZones'     => 'Zonas Publicadas',
 ];
