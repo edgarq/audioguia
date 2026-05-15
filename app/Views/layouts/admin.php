@@ -31,6 +31,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?= str_starts_with(uri_string(), 'admin/zones') ? 'active fw-bold' : 'text-dark' ?>" href="<?= base_url('admin/zones') ?>">
+                        <i class="bi bi-layers me-2"></i><?= lang('Admin.zones') ?>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?= str_starts_with(uri_string(), 'admin/stops') ? 'active fw-bold' : 'text-dark' ?>" href="<?= base_url('admin/stops') ?>">
                         <i class="bi bi-geo-alt me-2"></i><?= lang('Admin.stops') ?>
                     </a>

@@ -51,4 +51,13 @@ return [
     'inactive'           => 'Inactivo',
     'username'           => 'Nombre de Usuario',
     'keepPassword'       => 'Dejar en blanco para no cambiar la contraseña',
+    'zones'              => 'Zonas',
+    'createZone'         => 'Crear Zona',
+    'editZone'           => 'Editar Zona',
+    'zoneCreated'        => 'Zona creada correctamente.',
+    'zoneUpdated'        => 'Zona actualizada correctamente.',
+    'zoneDeleted'        => 'Zona eliminada correctamente.',
+    'zone'               => 'Zona',
+    'noZone'             => 'Sin zona',
+    'coverImage'         => 'Imagen de Portada',
 ];

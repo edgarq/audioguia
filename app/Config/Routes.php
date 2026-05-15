@@ -5,12 +5,13 @@ use CodeIgniter\Router\RouteCollection;
 /** @var RouteCollection $routes */
 
 // ── Public routes ──────────────────────────────────────────────
-$routes->get('/',           'GuideController::index/es');
+$routes->get('/',               'GuideController::index/es');
 $routes->get('lang/(:segment)', 'GuideController::switchLang/$1');
 
 foreach (['es', 'en', 'fr'] as $lang) {
-    $routes->get($lang,                      "GuideController::index/{$lang}");
-    $routes->get("{$lang}/stop/(:segment)",  "GuideController::stop/{$lang}/$1");
+    $routes->get($lang,                             "GuideController::index/{$lang}");
+    $routes->get("{$lang}/zone/(:segment)",         "GuideController::zone/{$lang}/$1");
+    $routes->get("{$lang}/stop/(:segment)",         "GuideController::stop/{$lang}/$1");
 }
 
 // ── Admin auth (no filter) ──────────────────────────────────────
@@ -22,6 +23,14 @@ $routes->get( 'admin/logout',  'Admin\AuthController::logout');
 // ── Admin protected routes ──────────────────────────────────────
 $routes->group('admin', ['filter' => 'adminauth', 'namespace' => 'App\Controllers\Admin'], function ($routes) {
     $routes->get('dashboard', 'DashboardController::index');
+
+    // Zones CRUD
+    $routes->get( 'zones',                    'ZonesController::index');
+    $routes->get( 'zones/create',             'ZonesController::create');
+    $routes->post('zones/store',              'ZonesController::store');
+    $routes->get( 'zones/edit/(:num)',        'ZonesController::edit/$1');
+    $routes->post('zones/update/(:num)',      'ZonesController::update/$1');
+    $routes->post('zones/delete/(:num)',      'ZonesController::delete/$1');
 
     // Stops CRUD
     $routes->get( 'stops',                    'StopsController::index');

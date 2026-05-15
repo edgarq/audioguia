@@ -51,4 +51,13 @@ return [
     'inactive'           => 'Inactive',
     'username'           => 'Username',
     'keepPassword'       => 'Leave blank to keep current password',
+    'zones'              => 'Zones',
+    'createZone'         => 'Create Zone',
+    'editZone'           => 'Edit Zone',
+    'zoneCreated'        => 'Zone created successfully.',
+    'zoneUpdated'        => 'Zone updated successfully.',
+    'zoneDeleted'        => 'Zone deleted successfully.',
+    'zone'               => 'Zone',
+    'noZone'             => 'No zone',
+    'coverImage'         => 'Cover Image',
 ];

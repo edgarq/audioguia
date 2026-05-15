@@ -26,6 +26,17 @@ $method    = 'post';
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-12 col-md-6">
+                    <label for="zone_id" class="form-label fw-semibold"><?= lang('Admin.zone') ?></label>
+                    <select id="zone_id" name="zone_id" class="form-select">
+                        <?php foreach ($zones as $zId => $zTitle): ?>
+                            <option value="<?= esc($zId) ?>"
+                                <?= old('zone_id', $stop->zone_id ?? '') == $zId ? 'selected' : '' ?>>
+                                <?= esc($zTitle) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6">
                     <label for="slug" class="form-label fw-semibold"><?= lang('Admin.slug') ?> <span class="text-danger">*</span></label>
                     <input type="text" id="slug" name="slug" class="form-control font-monospace"
                            value="<?= esc(old('slug', $stop->slug ?? '')) ?>"
@@ -33,6 +44,7 @@ $method    = 'post';
                            placeholder="entrada-principal">
                     <div class="form-text">Solo letras, números y guiones.</div>
                 </div>
+                <div class="w-100"></div>
                 <div class="col-6 col-md-3">
                     <label for="sort_order" class="form-label fw-semibold"><?= lang('Admin.sortOrder') ?></label>
                     <input type="number" id="sort_order" name="sort_order" class="form-control"

@@ -5,18 +5,33 @@ namespace App\Controllers\Admin;
 use App\Models\StopModel;
 use App\Models\StopTranslationModel;
 use App\Models\StopImageModel;
+use App\Models\ZoneModel;
 
 class StopsController extends BaseAdminController
 {
     private StopModel $stops;
     private StopTranslationModel $translations;
     private StopImageModel $images;
+    private ZoneModel $zones;
 
     public function __construct()
     {
         $this->stops        = new StopModel();
         $this->translations = new StopTranslationModel();
         $this->images       = new StopImageModel();
+        $this->zones        = new ZoneModel();
+    }
+
+    private function zonesForSelect(): array
+    {
+        $zones = $this->zones->getAllForAdmin();
+        $list  = ['' => '— ' . lang('Admin.noZone') . ' —'];
+        foreach ($zones as $z) {
+            $t = (new \App\Models\ZoneTranslationModel())->getForZoneLang($z->id, 'es')
+              ?? (new \App\Models\ZoneTranslationModel())->getForZoneLang($z->id, 'en');
+            $list[$z->id] = $t ? $t->title : "Zone #{$z->id}";
+        }
+        return $list;
     }
 
     public function index()
@@ -37,6 +52,7 @@ class StopsController extends BaseAdminController
             'stop'   => null,
             'trans'  => [],
             'images' => [],
+            'zones'  => $this->zonesForSelect(),
         ]);
     }
 
@@ -47,7 +63,9 @@ class StopsController extends BaseAdminController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        $zoneId = (int) $this->request->getPost('zone_id') ?: null;
         $id = $this->stops->insert([
+            'zone_id'      => $zoneId,
             'slug'         => $this->request->getPost('slug'),
             'sort_order'   => (int) $this->request->getPost('sort_order'),
             'is_published' => (int) $this->request->getPost('is_published'),
@@ -77,6 +95,7 @@ class StopsController extends BaseAdminController
             'stop'   => $stop,
             'trans'  => $trans,
             'images' => $this->images->getForStop((int) $id),
+            'zones'  => $this->zonesForSelect(),
         ]);
     }
 
@@ -92,7 +111,9 @@ class StopsController extends BaseAdminController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        $zoneId = (int) $this->request->getPost('zone_id') ?: null;
         $this->stops->update($id, [
+            'zone_id'      => $zoneId,
             'slug'         => $this->request->getPost('slug'),
             'sort_order'   => (int) $this->request->getPost('sort_order'),
             'is_published' => (int) $this->request->getPost('is_published'),

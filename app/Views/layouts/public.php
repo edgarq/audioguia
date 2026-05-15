@@ -17,7 +17,7 @@
 <!-- App header bar -->
 <header class="app-header">
     <?php if (!empty($showBack)): ?>
-        <a href="<?= base_url(session()->get('lang') ?? 'es') ?>"
+        <a href="<?= esc($backUrl ?? base_url(session()->get('lang') ?? 'es')) ?>"
            class="app-header__back"
            aria-label="<?= lang('App.backToList') ?>">
             <i class="bi bi-chevron-left" aria-hidden="true"></i>
@@ -71,10 +71,38 @@
                 <span class="bottom-nav__label"><?= lang('App.navInfo') ?? 'Info' ?></span>
             </a>
         </li>
+        <li class="bottom-nav__item">
+            <button type="button"
+                    class="bottom-nav__link"
+                    id="qrNavBtn"
+                    aria-label="<?= lang('App.navQr') ?? 'QR' ?>">
+                <i class="bi bi-qr-code-scan bottom-nav__icon" aria-hidden="true"></i>
+                <span class="bottom-nav__label"><?= lang('App.navQr') ?? 'QR' ?></span>
+            </button>
+        </li>
     </ul>
 </nav>
 
+<!-- QR Scanner modal -->
+<div id="qrModal" class="qr-modal" role="dialog" aria-modal="true" aria-label="<?= lang('App.qrScanTitle') ?? 'Escanear QR' ?>" hidden>
+    <div class="qr-modal__backdrop" id="qrBackdrop"></div>
+    <div class="qr-modal__sheet">
+        <div class="qr-modal__header">
+            <span class="qr-modal__title"><?= lang('App.qrScanTitle') ?? 'Escanear código QR' ?></span>
+            <button type="button" class="qr-modal__close" id="qrClose" aria-label="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="qr-modal__body">
+            <div id="qrReader"></div>
+            <p class="qr-modal__hint"><?= lang('App.qrScanHint') ?? 'Apunta la cámara a un código QR' ?></p>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script src="<?= base_url('assets/js/audio-player.js') ?>"></script>
+<script src="<?= base_url('assets/js/qr-scanner.js') ?>"></script>
 </body>
 </html>

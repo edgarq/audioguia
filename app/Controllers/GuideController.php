@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\StopModel;
 use App\Models\StopImageModel;
+use App\Models\ZoneModel;
 
 class GuideController extends BaseController
 {
@@ -11,14 +12,36 @@ class GuideController extends BaseController
 
     public function index(string $lang = 'es')
     {
-        $lang = $this->resolveLang($lang);
-        $model = new StopModel();
-        $stops = $model->getPublishedWithTranslation($lang);
+        $lang  = $this->resolveLang($lang);
+        $zones = (new ZoneModel())->getPublishedWithTranslation($lang);
 
         return view('public/index', [
             'title'  => lang('App.guideTitle'),
-            'stops'  => $stops,
+            'zones'  => $zones,
             'lang'   => $lang,
+        ]);
+    }
+
+    public function zone(string $lang, string $slug)
+    {
+        $lang      = $this->resolveLang($lang);
+        $zoneModel = new ZoneModel();
+        $stopModel = new StopModel();
+
+        $zone = $zoneModel->getBySlugWithTranslation($slug, $lang);
+        if (!$zone) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $stops = $stopModel->getPublishedForZone($zone->id, $lang);
+
+        return view('public/zone', [
+            'title'       => esc($zone->title),
+            'headerTitle' => esc($zone->title),
+            'showBack'    => true,
+            'zone'        => $zone,
+            'stops'       => $stops,
+            'lang'        => $lang,
         ]);
     }
 
@@ -33,13 +56,21 @@ class GuideController extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $zone = $stop->zone_id
+            ? (new ZoneModel())->getByIdWithTranslation((int) $stop->zone_id, $lang)
+            : null;
+
         return view('public/stop', [
             'title'       => esc($stop->title),
             'headerTitle' => esc($stop->title),
             'showBack'    => true,
+            'backUrl'     => $zone
+                ? base_url($lang . '/zone/' . $zone->slug)
+                : base_url($lang),
             'stop'        => $stop,
             'images'      => $imgModel->getForStop($stop->id),
             'lang'        => $lang,
+            'zone'        => $zone,
         ]);
     }
 

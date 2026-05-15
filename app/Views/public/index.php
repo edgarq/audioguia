@@ -7,31 +7,43 @@
     <p><?= esc(lang('App.guideSubtitle')) ?></p>
 </div>
 
-<?php if (empty($stops)): ?>
+<?php if (empty($zones)): ?>
     <div class="empty-state">
-        <i class="bi bi-headphones" aria-hidden="true"></i>
+        <i class="bi bi-map" aria-hidden="true"></i>
         <p><?= lang('App.noDescription') ?></p>
     </div>
 <?php else: ?>
 
     <div class="stop-count-bar">
-        <?= count($stops) ?> <?= lang('App.navStops') ?? 'paradas' ?>
+        <?= count($zones) ?> <?= lang('App.zones') ?>
     </div>
 
     <ol class="stop-list" aria-label="<?= esc(lang('App.guideTitle')) ?>">
-        <?php foreach ($stops as $i => $stop): ?>
+        <?php foreach ($zones as $i => $zone): ?>
         <li>
-            <a href="<?= base_url($lang . '/stop/' . esc($stop->slug)) ?>"
+            <a href="<?= base_url($lang . '/zone/' . esc($zone->slug)) ?>"
                class="stop-card"
-               aria-label="<?= ($i + 1) . ': ' . esc($stop->title) ?>">
+               aria-label="<?= esc($zone->title) ?>">
 
-                <span class="stop-card__number" aria-hidden="true"><?= $i + 1 ?></span>
+                <?php if ($zone->cover_image): ?>
+                    <img src="<?= base_url('uploads/' . esc($zone->cover_image)) ?>"
+                         class="stop-card__thumb"
+                         alt="<?= esc($zone->title) ?>"
+                         loading="lazy">
+                <?php else: ?>
+                    <span class="stop-card__number" aria-hidden="true"><?= $i + 1 ?></span>
+                <?php endif; ?>
 
                 <div class="stop-card__body">
-                    <p class="stop-card__title"><?= esc($stop->title) ?></p>
-                    <?php if ($stop->description): ?>
+                    <p class="stop-card__title"><?= esc($zone->title) ?></p>
+                    <?php if ($zone->description): ?>
                         <p class="stop-card__snippet">
-                            <?= esc(mb_substr(strip_tags($stop->description), 0, 80)) ?>
+                            <?= esc(mb_substr(strip_tags($zone->description), 0, 80)) ?>
+                        </p>
+                    <?php endif; ?>
+                    <?php if (isset($zone->stop_count)): ?>
+                        <p class="stop-card__snippet" style="color:var(--pat-accent)">
+                            <?= (int) $zone->stop_count ?> <?= lang('App.navStops') ?>
                         </p>
                     <?php endif; ?>
                 </div>
