@@ -246,7 +246,7 @@ class StopsController extends BaseAdminController
 
     private function sanitizeYoutubeUrl(string $url): string
     {
-        $pattern = '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+        $pattern = '/(?:(?:youtube|youtube-nocookie)\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
         if (preg_match($pattern, $url, $m)) {
             return 'https://www.youtube-nocookie.com/embed/' . $m[1];
         }
