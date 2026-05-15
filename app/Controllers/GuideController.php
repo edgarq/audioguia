@@ -34,10 +34,12 @@ class GuideController extends BaseController
         }
 
         return view('public/stop', [
-            'title'  => esc($stop->title),
-            'stop'   => $stop,
-            'images' => $imgModel->getForStop($stop->id),
-            'lang'   => $lang,
+            'title'       => esc($stop->title),
+            'headerTitle' => esc($stop->title),
+            'showBack'    => true,
+            'stop'        => $stop,
+            'images'      => $imgModel->getForStop($stop->id),
+            'lang'        => $lang,
         ]);
     }
 

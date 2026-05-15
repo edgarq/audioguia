@@ -1,36 +1,47 @@
 <?= $this->extend('layouts/public') ?>
 
 <?= $this->section('content') ?>
-<div class="container">
-    <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold"><?= esc(lang('App.guideTitle')) ?></h1>
-        <p class="lead text-muted"><?= esc(lang('App.guideSubtitle')) ?></p>
+
+<div class="guide-title-block">
+    <h1><?= esc(lang('App.guideTitle')) ?></h1>
+    <p><?= esc(lang('App.guideSubtitle')) ?></p>
+</div>
+
+<?php if (empty($stops)): ?>
+    <div class="empty-state">
+        <i class="bi bi-headphones" aria-hidden="true"></i>
+        <p><?= lang('App.noDescription') ?></p>
+    </div>
+<?php else: ?>
+
+    <div class="stop-count-bar">
+        <?= count($stops) ?> <?= lang('App.navStops') ?? 'paradas' ?>
     </div>
 
-    <?php if (empty($stops)): ?>
-        <p class="text-center text-muted"><?= lang('App.noDescription') ?></p>
-    <?php else: ?>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+    <ol class="stop-list" aria-label="<?= esc(lang('App.guideTitle')) ?>">
         <?php foreach ($stops as $i => $stop): ?>
-        <div class="col">
-            <div class="card h-100 border-0 shadow-sm rounded-3 stop-card">
-                <div class="card-body d-flex flex-column p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="stop-number"><?= $i + 1 ?></span>
-                        <h2 class="h5 fw-bold mb-0 ms-3 flex-grow-1"><?= esc($stop->title) ?></h2>
-                    </div>
+        <li>
+            <a href="<?= base_url($lang . '/stop/' . esc($stop->slug)) ?>"
+               class="stop-card"
+               aria-label="<?= ($i + 1) . ': ' . esc($stop->title) ?>">
+
+                <span class="stop-card__number" aria-hidden="true"><?= $i + 1 ?></span>
+
+                <div class="stop-card__body">
+                    <p class="stop-card__title"><?= esc($stop->title) ?></p>
                     <?php if ($stop->description): ?>
-                        <p class="text-muted small flex-grow-1"><?= esc(mb_substr($stop->description, 0, 120)) ?>…</p>
+                        <p class="stop-card__snippet">
+                            <?= esc(mb_substr(strip_tags($stop->description), 0, 80)) ?>
+                        </p>
                     <?php endif; ?>
-                    <a href="<?= base_url($lang . '/stop/' . esc($stop->slug)) ?>"
-                       class="btn btn-primary btn-sm mt-auto align-self-start">
-                        <i class="bi bi-headphones me-2"></i><?= lang('App.viewStop') ?>
-                    </a>
                 </div>
-            </div>
-        </div>
+
+                <i class="bi bi-chevron-right stop-card__chevron" aria-hidden="true"></i>
+            </a>
+        </li>
         <?php endforeach; ?>
-    </div>
-    <?php endif; ?>
-</div>
+    </ol>
+
+<?php endif; ?>
+
 <?= $this->endSection() ?>
