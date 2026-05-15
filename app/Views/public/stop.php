@@ -60,8 +60,8 @@
 
     <!-- Description -->
     <?php if ($stop->description): ?>
-    <div class="stop-description">
-        <?= nl2br(esc($stop->description)) ?>
+    <div class="stop-description ql-editor" style="padding:0">
+        <?= $stop->description ?>
     </div>
     <?php endif; ?>
 

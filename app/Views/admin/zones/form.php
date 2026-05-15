@@ -87,7 +87,10 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-semibold"><?= lang('Admin.description') ?> (<?= $langName ?>)</label>
-                            <textarea name="trans_<?= $code ?>[description]" class="form-control" rows="4"><?= esc(old("trans_{$code}[description]", $t->description ?? '')) ?></textarea>
+                            <textarea name="trans_<?= $code ?>[description]"
+                                      id="desc_<?= $code ?>"
+                                      class="d-none"><?= esc(old("trans_{$code}[description]", $t->description ?? '')) ?></textarea>
+                            <div id="editor_<?= $code ?>"></div>
                         </div>
                     </div>
                 </div>
@@ -103,4 +106,37 @@
         <a href="<?= base_url('admin/zones') ?>" class="btn btn-outline-secondary px-4"><?= lang('Admin.cancel') ?></a>
     </div>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toolbarOptions = [
+        [{ header: [2, 3, false] }],
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'clean']
+    ];
+
+    const instances = {};
+    ['es', 'en', 'fr'].forEach(function (lang) {
+        const textarea  = document.getElementById('desc_' + lang);
+        const container = document.getElementById('editor_' + lang);
+        if (!textarea || !container) return;
+
+        const quill = new Quill(container, { theme: 'snow', modules: { toolbar: toolbarOptions } });
+
+        if (textarea.value.trim()) {
+            quill.clipboard.dangerouslyPasteHTML(textarea.value);
+        }
+
+        instances[lang] = { quill: quill, textarea: textarea };
+    });
+
+    document.querySelector('form').addEventListener('submit', function () {
+        Object.keys(instances).forEach(function (lang) {
+            const html = instances[lang].quill.root.innerHTML;
+            instances[lang].textarea.value = html === '<p><br></p>' ? '' : html;
+        });
+    });
+});
+</script>
 <?= $this->endSection() ?>
